@@ -12,15 +12,16 @@
 
 <body>
     <center>
-        <h1>Welcome <%=user.name%></h1>
+        <h1>Welcome <%= user.name %></h1>
     </center>
     <% for(var i = prescriptions.length-1; i >= 0 ; i-- ) { %>
-    <div class="card" onclick="location.href='./history/<%= prescriptions[i]._id %>';"
-        style="width: 50%;margin-left: 25%; margin-top: 5%;">
+    <div class="card" style="width: 50%;margin-left: 25%; margin-top: 5%;">
         <div class="card-body">
             <%= prescriptions[i]._id %>
             <h4 class="card-title"><b><%= prescriptions[i].date.toDateString() %></b></h4>
             <p class="card-text"><b>Symptoms:</b><%= prescriptions[i].symptoms %></p>
+            <button onclick="location.href='./history/<%= prescriptions[i]._id %>/edit';">Edit</button>
+            <button onclick="location.href='./history/<%= prescriptions[i]._id %>/view';">View</button>
         </div>
     </div>
     <%}%>

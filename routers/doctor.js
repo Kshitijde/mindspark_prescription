@@ -49,15 +49,28 @@ router.get('/dashboard/patients/:patientId/history', async (req, res) => {
     })
 })
 
-router.get('/dashboard/patients/:patientId/history/:prescriptionId', async (req, res) => {
+router.get('/dashboard/patients/:patientId/history/:prescriptionId/view', async (req, res) => {
     const id = req.params.prescriptionId
+    console.log('VIEW')
     const prescription = await Prescription.findOne({ _id: id })
     console.log(prescription)
-    res.render('doctor/prescriptionOld', {
+    res.render('doctor/prescriptionView', {
         prescription,
         user: req.user
     })
 })
+
+router.get('/dashboard/patients/:patientId/history/:prescriptionId/edit', async (req, res) => {
+    const id = req.params.patientId
+    const prescription = await Prescription.findOne({ _id: id })
+    console.log(prescription)
+    res.render('doctor/prescriptionEdit', {
+        id,
+        prescription,
+        user: req.user
+    })
+})
+
 
 router.post("/savePrescription/:id", ensureAuthenticated, async (req, res) => {
     try {
