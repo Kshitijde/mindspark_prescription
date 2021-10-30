@@ -21,6 +21,21 @@ const doctorSchema = new mongoose.Schema({
     {
         type:String,
         required:true
+    },
+    age:
+    {
+        type:Number,
+        required:true
+    },
+    phoneNumber:
+    {
+        type:Number,
+        required:true
+    },
+    gender:
+    {
+        type:String,
+        required:true
     }
 });
 
