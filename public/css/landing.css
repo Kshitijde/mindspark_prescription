@@ -1,0 +1,81 @@
+body{
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.heading{
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    left: 118px;
+    top: 140px;
+    
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 80px;
+    line-height: 100px;
+    
+    color: #000000;
+    
+}
+
+
+.hero-img{
+    display: block;
+    margin-left: 30%;
+    margin-top: 60%;
+    width: 75%;
+    left: 70%;
+    top: 20%;
+    background: url('photos/business-3d-business-statistics 1.png');
+}
+
+.login-btn{
+    width: 40%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:100%;
+    background: #000000;
+    border-radius: 11px;
+    padding: 50px;
+}
+
+.login-btn-text{
+    width: 70%;
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: bold;
+    vertical-align: middle;
+    font-size: 28px;
+    line-height: 33px;
+
+    color: #FFFFFF;
+
+}
+
+.signup{
+    margin-top: 15%;
+    text-align: left;
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 18px;
+    display: inline-block;
+    color: #000000;
+}
+
+.team{
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 35px;
+
+    color: #000000;
+}

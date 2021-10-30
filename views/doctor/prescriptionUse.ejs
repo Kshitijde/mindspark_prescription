@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>Prescribe</title>
+</head>
+
+<body>
+    <div class="container" style="margin: 3%">
+
+        <form id="presciption" method="post" action="/doctor/savePrescription/<%= id %>">
+            <div class="text-dark" style="border-radius: 5px">
+                <center>
+                    <h3 id="heading_form">Prescription</h3>
+                </center>
+            </div>
+
+            <!-- Date -->
+            <div class="form-group form-row align-items-center col-md-6" style="margin-bottom: 3%">
+                <label for="date">Date</label>
+                <span class="text-danger">*</span>
+                <% var date =
+            prescription.date %> <% var day = String(date.getDate()).padStart(2,
+            '0'); %> <% var month = String(date.getMonth() + 1).padStart(2, '0'); %> <%
+            var year = date.getFullYear(); %>
+                <input required type="date" class="form-control" id="date" name="date" aria-describedby="emailHelp"
+                    value="<%= year %>-<%= month %>-<%= day %>" />
+            </div>
+
+            <div class="form-group" style="margin-bottom: 3%">
+                <label for="symptoms">Symptoms</label>
+                <input required class="form-control" name="symptoms" id="symptoms"
+                    value='<%= prescription.symptoms %>'></input>
+            </div>
+
+
+            <!-- Medication -->
+            <div class="medication-container" id="medications">
+
+                <div class="text-dark" style="border-radius: 5px">
+                    <h4 id="medicines">Medication:</h3>
+                </div>
+                <% for(var i=0; i < prescription.medicines.length; i++) { %>
+                <div class="medication" id='1'>
+                    <div class='form-row' style="margin-bottom: 1%">
+                        <!-- Medication Name -->
+                        <div class="form-group col-md-4">
+                            <label for='medicine'>Name of Medicine</label>
+                            <input required class="form-control" name="medicine" id="medicine"
+                                value='<%= prescription.medicines[i].medicine %>'></input>
+                        </div>
+
+                        <!-- Dosage -->
+                        <div class="form-group col-md-4">
+                            <label for="dosage">Dosage</label>
+                            <span class="text-danger">*</span>
+
+                            <input required class="form-control" name="dosage" id="dosage"
+                                value="<%= prescription.medicines[i].dosage %>"></input>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="form-group col-md-4">
+                            <label for="description">Description</label>
+                            <span class="text-danger">*</span>
+
+                            <input required class="form-control" name="description" id="description"
+                                value="<%= prescription.medicines[i].description %>"></input>
+                        </div>
+                    </div>
+
+                </div>
+                <% } %>
+
+            </div>
+            <button class="btn btn-success" style="margin-top: 4%" onclick="addMedication()">
+                Add Medicine
+            </button>
+
+            <br>
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-success" style="margin-top: 4%">
+                Submit
+            </button>
+        </form>
+
+
+        <script src="/js/prescription.js"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+</body>
+
+</html>

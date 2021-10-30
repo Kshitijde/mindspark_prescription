@@ -11,7 +11,7 @@ const Pharmacist = require("../models/pharmacist");
 const { forwardAuthenticated, ensureAuthenticated } = require("../config/auth");
 
 router.get("/", forwardAuthenticated, async (req, res) => {
-    res.redirect('login')
+  res.render('landingPage.ejs')
 })
 // Login
 router.post("/login", forwardAuthenticated, async (req, res, next) => {
@@ -38,7 +38,7 @@ router.post("/login", forwardAuthenticated, async (req, res, next) => {
       failureRedirect: "/login",
       failureFlash: true,
     })(req, res, next);
-  } else if(user.role=="patient"){
+  } else if (user.role == "patient") {
     console.log("authenticating patient")
     passport.authenticate("local", {
       successRedirect: "/patient/dashboard",
@@ -46,7 +46,7 @@ router.post("/login", forwardAuthenticated, async (req, res, next) => {
       failureFlash: true,
     })(req, res, next);
   }
-  else if(user.role=="pharmacist"){
+  else if (user.role == "pharmacist") {
     console.log("authenticating pharmacist")
     passport.authenticate("local", {
       successRedirect: "/pharmacist/dashboard",
@@ -229,26 +229,26 @@ router.post("/register", async (req, res) => {
             doctors
           });
         } else {
-            const newUser = new Pharmacist({
-              name,
-              email,
-              password,
-              role
+          const newUser = new Pharmacist({
+            name,
+            email,
+            password,
+            role
+          });
+          bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newUser.password, salt, (err, hash) => {
+              if (err) throw err;
+              newUser.password = hash;
+              newUser
+                .save()
+                .then((user) => {
+                  req.flash("success_msg", "Registration request sent");
+                  res.redirect("/patient/dashboard");
+                })
+                .catch((err) => console.log(err));
             });
-            bcrypt.genSalt(10, (err, salt) => {
-              bcrypt.hash(newUser.password, salt, (err, hash) => {
-                if (err) throw err;
-                newUser.password = hash;
-                newUser
-                  .save()
-                  .then((user) => {
-                    req.flash("success_msg", "Registration request sent");
-                    res.redirect("/patient/dashboard");
-                  })
-                  .catch((err) => console.log(err));
-              });
-            });
-          
+          });
+
 
         }
       })

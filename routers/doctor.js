@@ -60,12 +60,13 @@ router.get('/dashboard/patients/:patientId/history/:prescriptionId/view', async 
     })
 })
 
-router.get('/dashboard/patients/:patientId/history/:prescriptionId/edit', async (req, res) => {
-    const id = req.params.patientId
-    const prescription = await Prescription.findOne({ _id: id })
+router.get('/dashboard/patients/:patientId/history/:prescriptionId/use', async (req, res) => {
+    const prescriptionId = req.params.prescriptionId
+    const patientId = req.params.patientId
+    const prescription = await Prescription.findOne({ _id: prescriptionId })
     console.log(prescription)
-    res.render('doctor/prescriptionEdit', {
-        id,
+    res.render('doctor/prescriptionUse', {
+        id: patientId,
         prescription,
         user: req.user
     })
