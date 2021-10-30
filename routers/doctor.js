@@ -39,22 +39,51 @@ router.get('/dashboard/patients/:patientId/prescribe', async (req, res) => {
     })
 })
 
+router.get('/dashboard/patients/:patientId/history', async (req, res) => {
+    const id = req.params.patientId
+    var prescriptions = await Prescription.find({ owner: id }, { date: 1, _id: 1, symptoms: 1 })
+    console.log(prescriptions)
+    res.render('doctor/prescriptions', {
+        prescriptions,
+        user: req.user
+    })
+})
 
-router.post("/savePrescription/:id", async (req, res) => {
+router.get('/dashboard/patients/:patientId/history/:prescriptionId', async (req, res) => {
+    const id = req.params.prescriptionId
+    const prescription = await Prescription.findOne({ _id: id })
+    console.log(prescription)
+    res.render('doctor/prescriptionOld', {
+        prescription,
+        user: req.user
+    })
+})
+
+router.post("/savePrescription/:id", ensureAuthenticated, async (req, res) => {
     try {
         console.log("in prescription save ")
         console.log(req.body)
-        const elements = typeOf(req.body.medicine);
         const { date, symptoms, medicine, dosage, description } = req.body;
+        var medicines = []
+        if (typeof medicine == 'string') {
 
-        const medicines = []
-        for (var i = 0; i < elements; i++) {
             var obj = {
-                medicine: medicine[i],
-                dosage: dosage[i],
-                description: description[i]
+                medicine,
+                dosage,
+                description
             }
             medicines.push(obj)
+        }
+        else {
+            const elements = req.body.medicine.length;
+            for (var i = 0; i < elements; i++) {
+                var obj = {
+                    medicine: medicine[i],
+                    dosage: dosage[i],
+                    description: description[i]
+                }
+                medicines.push(obj)
+            }
         }
 
         const formdata = new Prescription({
@@ -66,13 +95,23 @@ router.post("/savePrescription/:id", async (req, res) => {
 
         await formdata.save();
         res.status(201);
-        res.render("doctor/doctorDashboard", {
-            name: req.user.name
-        });
+        res.redirect("/doctor/dashboard")
     }
     catch (e) {
         res.status(400);
         console.log("Error: ", e);
     }
 });
+
+router.get('/dashboard/profile', ensureAuthenticated, async (req, res) => {
+    console.log("In doctor profile")
+    var doctor = await Doctor.findOne({ email: req.user.email })
+    console.log(doctor);
+    res.render("doctor/profile",
+        {
+            doctor
+        })
+})
+
+
 module.exports = router
