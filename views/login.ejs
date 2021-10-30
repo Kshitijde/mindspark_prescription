@@ -59,10 +59,16 @@
     <form action="/login" method="POST" style="margin-top: 2%; margin-bottom: 2%">
         <div class="container">
             <label>Email: </label>
-            <input type="email" placeholder="Enter Username" name="username" required>
+            <input type="email" placeholder="Enter Username" name="email" required>
             <label>Password : </label>
+            <p>Role:</p>
+              <input type="radio" id="html" name="role" value="doctor">
+              <label for="html">Doctor</label><br>
+              <input type="radio" id="css" name="role" value="patient">
+              <label for="css">Patient</label><br>
             <input type="password" placeholder="Enter Password" name="password" required>
             <button type="submit">Login</button>
+            <%- include ("./messagePartials/messages") %>
         </div>
     </form>
 </body>

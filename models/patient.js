@@ -13,6 +13,11 @@ const patientSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    role:
+    {
+        type:String,
+        required:true
+    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,

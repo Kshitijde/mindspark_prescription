@@ -1,0 +1,95 @@
+<Html>  
+<head>   
+<title>  
+Registration Page  
+</title>  
+</head>  
+<body bgcolor="Lightskyblue">  
+<br>  
+<br>  
+<form action="/register" method="post">  
+  
+<label> Name </label>         
+<input type="text" name="name" size="15"/> <br> <br>  
+     
+<br>  
+<label>   
+Role :  
+</label><br>  
+<input type="radio" name="role" value="doctor" onclick="toggle('doctor')"/> Doctor <br>  
+<input type="radio" name="role" value="patient" onclick="toggle('patient')"/> Patient <br>  
+<br>  
+ <br>  
+Email:  
+<input type="email" id="email" name="email"/> <br>    
+<br> <br>  
+<div id="expertise" style="display: none;">
+  <label> Expertise </label>         
+  <input type="text" name="expertise" size="15"/> <br> <br>
+ </div>
+<div class="form-group" id="doctorsselector" style="display: none;">
+    <label for="doctorselected">Doctor</label>
+    <span class="text-danger">*</span>
+    <select
+      name="doctor"
+      id="doctorselected"
+      class="selectpicker form-control"
+      data-live-search="false"
+      style="margin-bottom: 3%"
+    >
+      <% for(var i=0; i<=doctors.length-1; i++) { %>
+      <option><%= doctors[i].name %></option>
+      <% } %>
+    </select>
+</div>
+Password:  
+<input type="Password" id="pass" name="password"> <br>   
+<br> <br>    
+Confirm Password:  
+<input type="Password" id="pass" name="password2"> <br>   
+<br> <br>    
+<button type="submit">Register</button>
+<%- include ("./messagePartials/messages") %>
+</form>  
+</body>  
+<script>
+    function toggle(role)
+    {
+      console.log("in toggle")
+        if(role=='doctor')
+        {
+          var expertise=document.querySelector('#expertise');
+          console.log(expertise)
+          expertise.style.display='block';
+          var doctors=document.querySelector('#doctorsselector');
+          console.log(doctors)
+          doctors.style.display='none';
+        }
+        else if(role=='patient')
+        {
+          var expertise=document.querySelector('#expertise');
+          console.log(expertise)
+          expertise.style.display='none';
+          var doctors=document.querySelector('#doctorsselector');
+          console.log(doctors)
+          doctors.style.display='block';
+        }
+
+    }
+</script>
+<script
+src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+crossorigin="anonymous"
+></script>
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+crossorigin="anonymous"
+></script>
+<script
+src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+crossorigin="anonymous"
+></script>
+</html>  

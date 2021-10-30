@@ -11,7 +11,7 @@ const { forwardAuthenticated, ensureAuthenticated } = require("../config/auth");
 
 
 // Login
-router.post("/login", async (req, res, next) => {
+router.post("/login",forwardAuthenticated, async (req, res, next) => {
   console.log("IN ENDPOINT")
   var user;
   if (req.body.role == "doctor") {
@@ -41,7 +41,7 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
-router.get('/check', passport.authenticate('local'), (req, res) => {
+router.get('/check', ensureAuthenticated, (req, res) => {
   console.log("IN CHECK")
   console.log(req.user);
 })
@@ -49,6 +49,162 @@ router.get('/check', passport.authenticate('local'), (req, res) => {
 router.get("/login", forwardAuthenticated, async (req, res) =>
   res.render("login")
 );
+
+router.get("/register", async (req, res) =>{
+  let doctors=[];
+  console.log('in get for register')
+  await Doctor.find({},{name:1,_id:0}).then((users) => {
+    doctors=users;
+    console.log(doctors)
+  })
+  // console.log(doctors)
+  for(var i=0;i<doctors.length;i++)
+  {
+    console.log("heere",doctors[i]);
+  }
+  res.render("register",{
+    doctors
+  })
+});
+
+// Register
+router.post("/register",async (req, res) => {
+  console.log("in route of register")
+  let doctors=[];
+  console.log('in get for register')
+  await Doctor.find({},{name:1,_id:0}).then((users) => {
+    doctors=users;
+    console.log(doctors)
+  })
+  console.log(req.body)
+  const { name, email, password, password2,role,expertise,doctor} = req.body;
+  let errors = [];
+
+  if (!name || !email || !password || !password2) {
+    errors.push({
+      msg: "Please enter all fields",
+    });
+  }
+
+  if (password != password2) {
+    errors.push({
+      msg: "Passwords do not match",
+    });
+    res.render("register", {
+      errors,
+      name,
+      email,
+      password,
+      password2,
+      doctors
+    });
+  }
+
+  if (password.length < 6) {
+    errors.push({
+      msg: "Password must be at least 6 characters",
+    });
+  }
+
+  if (errors.length > 0) {
+    res.render("register", {
+      errors,
+      name,
+      email,
+      password,
+      password2,
+      doctors
+    });
+  } else {
+    console.log("in else of register...checking role",role)
+    if(role=="doctor")
+    {
+      Doctor.findOne({email: email}).then((user) => {
+        if (user) {
+          errors.push({
+            msg: "Email or Registration ID already exists",
+          });
+          res.render("register", {
+            errors,
+            name,
+            email,
+            password,
+            password2,
+            doctors
+          });
+        }else {
+          const newUser = new Doctor({
+            name,
+            email,
+            password,
+            role,
+            expertise
+          });
+          bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newUser.password, salt, (err, hash) => {
+              if (err) throw err;
+              newUser.password = hash;
+              newUser
+                .save()
+                .then((user) => {
+                  req.flash("success_msg", "Registration request sent");
+                  res.redirect("/");
+                })
+                .catch((err) => console.log(err));
+            });
+          });
+        }
+      })
+    }
+    else if(role=="patient")
+    {
+      Patient.findOne({email: email}).then((user) => {
+        if (user) {
+          errors.push({
+            msg: "Email already exists",
+          });
+          res.render("register", {
+            errors,
+            name,
+            email,
+            password,
+            password2,
+            doctors
+          });
+        }else {
+          var owner;
+          Doctor.findOne({name:doctor}).then((user) => {
+              console.log(user)
+              owner=user._id;
+              console.log("your master is",owner)
+              const newUser = new Patient({
+                name,
+                email,
+                password,
+                role,
+                owner
+              });
+              bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newUser.password, salt, (err, hash) => {
+                  if (err) throw err;
+                  newUser.password = hash;
+                  newUser
+                    .save()
+                    .then((user) => {
+                      req.flash("success_msg", "Registration request sent");
+                      res.redirect("/");
+                    })
+                    .catch((err) => console.log(err));
+                });
+              });
+          })
+          
+        }
+      })
+    }
+    
+  }
+});
 
 
 module.exports = router;

@@ -16,6 +16,11 @@ const doctorSchema = new mongoose.Schema({
     expertise: {
         type: String,
         required: true,
+    },
+    role:
+    {
+        type:String,
+        required:true
     }
 });
 
