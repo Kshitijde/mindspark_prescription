@@ -32,14 +32,14 @@ router.get('/dashboard/patients/:id', ensureAuthenticated, async (req, res) => {
     })
 })
 
-router.get('/dashboard/patients/:patientId/prescribe', async (req, res) => {
+router.get('/dashboard/patients/:patientId/prescribe', ensureAuthenticated, async (req, res) => {
     const id = req.params.patientId
     res.render('doctor/prescriptionForm', {
         id
     })
 })
 
-router.get('/dashboard/patients/:patientId/history', async (req, res) => {
+router.get('/dashboard/patients/:patientId/history', ensureAuthenticated, async (req, res) => {
     const id = req.params.patientId
     var prescriptions = await Prescription.find({ owner: id }, { date: 1, _id: 1, symptoms: 1 })
     console.log(prescriptions)
@@ -49,7 +49,7 @@ router.get('/dashboard/patients/:patientId/history', async (req, res) => {
     })
 })
 
-router.get('/dashboard/patients/:patientId/history/:prescriptionId/view', async (req, res) => {
+router.get('/dashboard/patients/:patientId/history/:prescriptionId/view', ensureAuthenticated, async (req, res) => {
     const id = req.params.prescriptionId
     console.log('VIEW')
     const prescription = await Prescription.findOne({ _id: id })
@@ -60,7 +60,7 @@ router.get('/dashboard/patients/:patientId/history/:prescriptionId/view', async 
     })
 })
 
-router.get('/dashboard/patients/:patientId/history/:prescriptionId/use', async (req, res) => {
+router.get('/dashboard/patients/:patientId/history/:prescriptionId/use', ensureAuthenticated, async (req, res) => {
     const prescriptionId = req.params.prescriptionId
     const patientId = req.params.patientId
     const prescription = await Prescription.findOne({ _id: prescriptionId })
