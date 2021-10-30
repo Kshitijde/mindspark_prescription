@@ -6,31 +6,39 @@
     <title> Login Page </title>
     <style>
         Body {
-            font-family: Calibri, Helvetica, sans-serif;
-            background-color: pink;
+            font-family: Raleway;
+            /* background-color: pink; */
         }
 
         button {
-            background-color: #4CAF50;
+            background-color: #FFFFFF;
             width: 100%;
-            color: orange;
+            color: black;
             padding: 15px;
             margin: 10px 0px;
-            border: none;
+            /* border: none; */
             cursor: pointer;
+            /* border-radius: 20%; */
+            /* border: 15px black; */
         }
 
-        form {
-            border: 3px solid #f1f1f1;
-        }
 
-        input[type=text],
+
         input[type=password] {
             width: 100%;
             margin: 8px 0;
             padding: 12px 20px;
             display: inline-block;
-            border: 2px solid green;
+            /* border: 2px solid green; */
+            box-sizing: border-box;
+        }
+
+        input[type=email] {
+            width: 100%;
+            margin: 8px 0;
+            padding: 12px 20px;
+            display: inline-block;
+            /* border: 2px solid green; */
             box-sizing: border-box;
         }
 
@@ -48,6 +56,7 @@
         .container {
             padding: 25px;
             background-color: lightblue;
+            border: 2px black;
         }
     </style>
 </head>
@@ -56,18 +65,25 @@
     <center>
         <h1>Login</h1>
     </center>
-    <form action="/login" method="POST" style="margin-top: 2%; margin-bottom: 2%">
-        <div class="container">
+    <form action="/login" method="POST">
+        <div class="container"
+            style="width:30%;margin-left: 35%;margin-top: 7%; background-color:#F4F4F4;border: 2px black; border-radius: 5%;">
             <label>Email: </label>
             <input type="email" placeholder="Enter Username" name="email" required>
             <label>Password : </label>
-            <p>Role:</p>
-              <input type="radio" id="html" name="role" value="doctor">
-              <label for="html">Doctor</label><br>
-              <input type="radio" id="css" name="role" value="patient">
-              <label for="css">Patient</label><br>
             <input type="password" placeholder="Enter Password" name="password" required>
+            <label>Role:</label>
+            <br>
+            <div style="margin-bottom:2%;">
+                  <input type="radio" id="html" name="role" value="doctor">
+                  <label for="html">Doctor</label><br>
+                  <input type="radio" id="css" name="role" value="patient">
+                  <label for="css">Patient</label><br>
+                <input type="radio" style="margin-left: 3.4%;" id="js" name="role" value="pharmacist">
+                  <label for="js">Pharmacist</label><br>
+            </div>
             <button type="submit">Login</button>
+            <p>Haven't registered yet?</p><a href="./register">Register Now!</a>
             <%- include ("./messagePartials/messages") %>
         </div>
     </form>

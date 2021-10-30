@@ -34,8 +34,8 @@ router.post("/login", forwardAuthenticated, async (req, res, next) => {
   } else {
     console.log("authenticating patient")
     passport.authenticate("local", {
-      successRedirect: "/check",
-      failureRedirect: "/",
+      successRedirect: "/patient/dashboard",
+      failureRedirect: "/login",
       failureFlash: true,
     })(req, res, next);
   }
@@ -201,6 +201,14 @@ router.post("/register", async (req, res) => {
     }
 
   }
+});
+
+// Logout
+router.get("/logout", (req, res) => {
+  console.log("logging out")
+  req.logout();
+  req.flash("success_msg", "You are logged out");
+  res.redirect("/login");
 });
 
 
