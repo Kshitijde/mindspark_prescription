@@ -21,7 +21,7 @@ const prescriptionSchema = new mongoose.Schema({
         required: true,
         ref: "Patient"
     },
-});
+},{timestamps:true});
 
 const Prescription = mongoose.model("Prescription", prescriptionSchema);
 

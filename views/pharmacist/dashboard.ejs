@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Pharmacist Dashboard </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        Body {
+            font-family: Raleway;
+            /* background-color: pink; */
+        }
+        button {
+            background-color: #FFFFFF;
+            width: 100%;
+            color: black;
+            padding: 15px;
+            margin: 10px 0px;
+            /* border: none; */
+            cursor: pointer;
+            /* border-radius: 20%; */
+            /* border: 15px black; */
+        }
+        input[type=password] {
+            width: 100%;
+            margin: 8px 0;
+            padding: 12px 20px;
+            display: inline-block;
+            /* border: 2px solid green; */
+            box-sizing: border-box;
+        }
+        input[type=email] {
+            width: 100%;
+            margin: 8px 0;
+            padding: 12px 20px;
+            display: inline-block;
+            /* border: 2px solid green; */
+            box-sizing: border-box;
+        }
+        button:hover {
+            opacity: 0.7;
+        }
+        .container {
+            padding: 50px;
+            background-color: lightblue;
+            border: 2px black;
+        }
+    </style>
+</head>
+
+<body>
+    <center>
+        <h1>Verify</h1>
+    </center>
+    <form action="/pharmacist/verifyEmail" method="POST">
+        <div class="container"
+            style="width:30%;margin-left: 35%;margin-top: 7%; background-color:#F4F4F4;border: 2px black; border-radius: 5%;">
+            <label><h3>Enter email: </h3></label>
+            <input type="email" placeholder="Enter email of patient" name="email" required>
+            <%- include (".././messagePartials/messages") %>
+            <button type="submit">Verify</button>
+        </div>
+    </form>
+</body>
+<script>
+    $(document).ready(function(){
+        if('<%=errorMessage%>'!="")
+        {
+            alert('<%=errorMessage%>')
+        };
+  });
+</script>
+</html>
