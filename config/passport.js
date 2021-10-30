@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 // Load User model
 const Doctor = require("../models/doctor");
 const Patient=require("../models/patient");
+const Pharmacist=require("../models/pharmacist");
 
 module.exports = function (passport) {
   passport.use(
@@ -18,34 +19,41 @@ module.exports = function (passport) {
         Patient.findOne({
             email: email,
         }).then((patient) => {
-
-            if (!doctor && !patient) {
-            return done(null, false, {
-                message: "That email is not registered"
-            });
-            }
-            var user;
-            if(!doctor)
-            {
-                user=patient;
-            }
-            else
-            {
-                user=doctor;
-            }
-            console.log("user in auth process is...",user)
-            bcrypt.compare(password, user.password, (err, isMatch) => {
-            if (err) throw err;
-            if (isMatch) {
-                console.log("password matched!!")
-                return done(null, user);
-            } else {
-              console.log("incorrect password")
+            Pharmacist.findOne({
+                email: email,
+            }).then((pharmacist) => {
+                if (!doctor && !patient && !pharmacist) {
                 return done(null, false, {
-                message: "Password incorrect"
+                    message: "That email is not registered"
                 });
-            }
-            });
+                }
+                var user;
+                if(!doctor && !pharmacist)
+                {
+                    user=patient;
+                }
+                else if(!patient && !pharmacist)
+                {
+                    user=doctor;
+                }
+                else
+                {
+                    user=pharmacist;
+                }
+                console.log("user in auth process is...",user)
+                bcrypt.compare(password, user.password, (err, isMatch) => {
+                if (err) throw err;
+                if (isMatch) {
+                    console.log("password matched!!")
+                    return done(null, user);
+                } else {
+                  console.log("incorrect password")
+                    return done(null, false, {
+                    message: "Password incorrect"
+                    });
+                }
+              });
+            })
 
 
       });
@@ -65,7 +73,16 @@ module.exports = function (passport) {
         if(!doctor)
         {
             Patient.findById(id, function (err, patient) {
+              if(!patient)
+              {
+                Pharmacist.findById(id, function (err, pharmacist) {
+                  done(err,pharmacist)
+                })
+              }
+              else
+              {
                 done(err, patient);
+              }
             })
         }
         else

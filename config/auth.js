@@ -14,11 +14,15 @@ module.exports = {
         return next();
       }
       if (req.user.role === "doctor") {
-        // res.redirect("/teacherdashboard");
+        res.redirect("/doctor/doctorDashboard");
         console.log("DOCTORRRRRRRR")
       } else if (req.user.role == "patient") {
         console.log("PATIENT")
         res.redirect("/patient/dashboard");
+      }
+        else if (req.user.role == "pharmacist") {
+          console.log("PHARMACIST")
+          res.redirect("/pharmacist/dashboard");
       } else {
         console.log("ERROR")
       }

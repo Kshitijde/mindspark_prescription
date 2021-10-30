@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Pharmacist Dashboard </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        Body {
+            font-family: Raleway;
+            /* background-color: pink; */
+        }
+        button {
+            background-color: #FFFFFF;
+            width: 100%;
+            color: black;
+            padding: 15px;
+            margin: 10px 0px;
+            /* border: none; */
+            cursor: pointer;
+            /* border-radius: 20%; */
+            /* border: 15px black; */
+        }
+        input[type=password] {
+            width: 100%;
+            margin: 8px 0;
+            padding: 12px 20px;
+            display: inline-block;
+            /* border: 2px solid green; */
+            box-sizing: border-box;
+        }
+        input[type=otp] {
+            width: 100%;
+            margin: 8px 0;
+            padding: 12px 20px;
+            display: inline-block;
+            /* border: 2px solid green; */
+            box-sizing: border-box;
+        }
+        button:hover {
+            opacity: 0.7;
+        }
+        .container {
+            padding: 50px;
+            background-color: lightblue;
+            border: 2px black;
+        }
+    </style>
+</head>
+
+<body>
+    <center>
+        <h1>Verify OTP</h1>
+    </center>
+    <form onsubmit="return false">
+        <div class="container"
+            style="width:30%;margin-left: 35%;margin-top: 7%; background-color:#F4F4F4;border: 2px black; border-radius: 5%;">
+            <label><h3>Enter OTP: </h3></label>
+            <input type="otp" id="otp" placeholder="Enter otp" name="otp" required>
+            <%- include (".././messagePartials/messages") %>
+            <button onclick="verifyOTP()">Verify</button>
+        </div>
+    </form>
+</body>
+<script>
+    function verifyOTP()
+    {
+        // e.preventDefault();
+        console.log("in verify otp")
+        var typedOTP=document.querySelector("#otp").value;
+        console.log(typedOTP)
+        console.log('<%=otp%>')
+        if(typedOTP=='<%=otp%>')
+        {
+            location.href='/pharmacist/showPatient/<%=email%>';
+            console.log("they matched")
+        }
+        else{
+            location.href='/pharmacist/wrongOTP';
+        }
+    }
+</script>
+</html>

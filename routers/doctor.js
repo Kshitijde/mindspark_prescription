@@ -44,7 +44,7 @@ router.post("/savePrescription/:id", async (req, res) => {
     try {
         console.log("in prescription save ")
         console.log(req.body)
-        const elements = req.body.medicine.length;
+        const elements = typeOf(req.body.medicine);
         const { date, symptoms, medicine, dosage, description } = req.body;
 
         const medicines = []

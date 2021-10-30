@@ -6,10 +6,13 @@ const passport = require("passport");
 // Load User model
 const Doctor = require("../models/doctor");
 const Patient = require("../models/patient");
+const Pharmacist = require("../models/pharmacist");
 
 const { forwardAuthenticated, ensureAuthenticated } = require("../config/auth");
 
-
+router.get("/", forwardAuthenticated, async (req, res) => {
+    res.redirect('login')
+})
 // Login
 router.post("/login", forwardAuthenticated, async (req, res, next) => {
   console.log("IN ENDPOINT")
@@ -23,6 +26,10 @@ router.post("/login", forwardAuthenticated, async (req, res, next) => {
     user = await Patient.findOne({ email: req.body.email });
     console.log("PATIENT FOUND", user)
   }
+  else if (req.body.role == "pharmacist") {
+    user = await Pharmacist.findOne({ email: req.body.email });
+    console.log("PHARMACIST FOUND", user)
+  }
 
   if (user.role === "doctor") {
     console.log("authenticating doc")
@@ -31,10 +38,18 @@ router.post("/login", forwardAuthenticated, async (req, res, next) => {
       failureRedirect: "/login",
       failureFlash: true,
     })(req, res, next);
-  } else {
+  } else if(user.role=="patient"){
     console.log("authenticating patient")
     passport.authenticate("local", {
       successRedirect: "/patient/dashboard",
+      failureRedirect: "/login",
+      failureFlash: true,
+    })(req, res, next);
+  }
+  else if(user.role=="pharmacist"){
+    console.log("authenticating pharmacist")
+    passport.authenticate("local", {
+      successRedirect: "/pharmacist/dashboard",
       failureRedirect: "/login",
       failureFlash: true,
     })(req, res, next);
@@ -195,6 +210,45 @@ router.post("/register", async (req, res) => {
               });
             });
           })
+
+        }
+      })
+    }
+    else if (role == "pharmacist") {
+      Pharmacist.findOne({ email: email }).then((user) => {
+        if (user) {
+          errors.push({
+            msg: "Email already exists",
+          });
+          res.render("register", {
+            errors,
+            name,
+            email,
+            password,
+            password2,
+            doctors
+          });
+        } else {
+            const newUser = new Pharmacist({
+              name,
+              email,
+              password,
+              role
+            });
+            bcrypt.genSalt(10, (err, salt) => {
+              bcrypt.hash(newUser.password, salt, (err, hash) => {
+                if (err) throw err;
+                newUser.password = hash;
+                newUser
+                  .save()
+                  .then((user) => {
+                    req.flash("success_msg", "Registration request sent");
+                    res.redirect("/patient/dashboard");
+                  })
+                  .catch((err) => console.log(err));
+              });
+            });
+          
 
         }
       })
