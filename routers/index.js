@@ -11,7 +11,7 @@ const { forwardAuthenticated, ensureAuthenticated } = require("../config/auth");
 
 
 // Login
-router.post("/login",forwardAuthenticated, async (req, res, next) => {
+router.post("/login", forwardAuthenticated, async (req, res, next) => {
   console.log("IN ENDPOINT")
   var user;
   if (req.body.role == "doctor") {
@@ -27,8 +27,8 @@ router.post("/login",forwardAuthenticated, async (req, res, next) => {
   if (user.role === "doctor") {
     console.log("authenticating doc")
     passport.authenticate("local", {
-      successRedirect: "/check",
-      failureRedirect: "/",
+      successRedirect: "/doctor/dashboard",
+      failureRedirect: "/login",
       failureFlash: true,
     })(req, res, next);
   } else {
@@ -50,34 +50,33 @@ router.get("/login", forwardAuthenticated, async (req, res) =>
   res.render("login")
 );
 
-router.get("/register", async (req, res) =>{
-  let doctors=[];
+router.get("/register", async (req, res) => {
+  let doctors = [];
   console.log('in get for register')
-  await Doctor.find({},{name:1,_id:0}).then((users) => {
-    doctors=users;
+  await Doctor.find({}, { name: 1, _id: 0 }).then((users) => {
+    doctors = users;
     console.log(doctors)
   })
   // console.log(doctors)
-  for(var i=0;i<doctors.length;i++)
-  {
-    console.log("heere",doctors[i]);
+  for (var i = 0; i < doctors.length; i++) {
+    console.log("heere", doctors[i]);
   }
-  res.render("register",{
+  res.render("register", {
     doctors
   })
 });
 
 // Register
-router.post("/register",async (req, res) => {
+router.post("/register", async (req, res) => {
   console.log("in route of register")
-  let doctors=[];
+  let doctors = [];
   console.log('in get for register')
-  await Doctor.find({},{name:1,_id:0}).then((users) => {
-    doctors=users;
+  await Doctor.find({}, { name: 1, _id: 0 }).then((users) => {
+    doctors = users;
     console.log(doctors)
   })
   console.log(req.body)
-  const { name, email, password, password2,role,expertise,doctor} = req.body;
+  const { name, email, password, password2, role, expertise, doctor } = req.body;
   let errors = [];
 
   if (!name || !email || !password || !password2) {
@@ -116,10 +115,9 @@ router.post("/register",async (req, res) => {
       doctors
     });
   } else {
-    console.log("in else of register...checking role",role)
-    if(role=="doctor")
-    {
-      Doctor.findOne({email: email}).then((user) => {
+    console.log("in else of register...checking role", role)
+    if (role == "doctor") {
+      Doctor.findOne({ email: email }).then((user) => {
         if (user) {
           errors.push({
             msg: "Email or Registration ID already exists",
@@ -132,7 +130,7 @@ router.post("/register",async (req, res) => {
             password2,
             doctors
           });
-        }else {
+        } else {
           const newUser = new Doctor({
             name,
             email,
@@ -148,7 +146,7 @@ router.post("/register",async (req, res) => {
                 .save()
                 .then((user) => {
                   req.flash("success_msg", "Registration request sent");
-                  res.redirect("/");
+                  res.redirect("/doctor/dashboard");
                 })
                 .catch((err) => console.log(err));
             });
@@ -156,9 +154,8 @@ router.post("/register",async (req, res) => {
         }
       })
     }
-    else if(role=="patient")
-    {
-      Patient.findOne({email: email}).then((user) => {
+    else if (role == "patient") {
+      Patient.findOne({ email: email }).then((user) => {
         if (user) {
           errors.push({
             msg: "Email already exists",
@@ -171,38 +168,38 @@ router.post("/register",async (req, res) => {
             password2,
             doctors
           });
-        }else {
+        } else {
           var owner;
-          Doctor.findOne({name:doctor}).then((user) => {
-              console.log(user)
-              owner=user._id;
-              console.log("your master is",owner)
-              const newUser = new Patient({
-                name,
-                email,
-                password,
-                role,
-                owner
+          Doctor.findOne({ name: doctor }).then((user) => {
+            console.log(user)
+            owner = user._id;
+            console.log("your master is", owner)
+            const newUser = new Patient({
+              name,
+              email,
+              password,
+              role,
+              owner
+            });
+            bcrypt.genSalt(10, (err, salt) => {
+              bcrypt.hash(newUser.password, salt, (err, hash) => {
+                if (err) throw err;
+                newUser.password = hash;
+                newUser
+                  .save()
+                  .then((user) => {
+                    req.flash("success_msg", "Registration request sent");
+                    res.redirect("/patient/dashboard");
+                  })
+                  .catch((err) => console.log(err));
               });
-              bcrypt.genSalt(10, (err, salt) => {
-                bcrypt.hash(newUser.password, salt, (err, hash) => {
-                  if (err) throw err;
-                  newUser.password = hash;
-                  newUser
-                    .save()
-                    .then((user) => {
-                      req.flash("success_msg", "Registration request sent");
-                      res.redirect("/");
-                    })
-                    .catch((err) => console.log(err));
-                });
-              });
+            });
           })
-          
+
         }
       })
     }
-    
+
   }
 });
 

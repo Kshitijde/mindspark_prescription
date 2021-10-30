@@ -61,6 +61,7 @@ global.__basedir = __dirname;
 
 // Routes
 app.use("/", require("./routers/index.js"));
+app.use("/doctor", require("./routers/doctor.js"));
 
 // CORS
 app.use(function (req, res, next) {

@@ -5,10 +5,15 @@ const prescriptionSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
+    symptoms: {
+        type: String,
+        required: true
+    },
     medicines: [
         {
-            medName: String,
-            dosage: String
+            medicine: String,
+            dosage: String,
+            description: String
         }
     ],
     owner: {
