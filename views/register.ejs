@@ -2,54 +2,109 @@
 <head>   
 <title>  
 Registration Page  
-</title>  
+</title> 
+<style>
+  Body {
+    font-family:Raleway;
+    /* background-color: pink; */
+  }
+
+  button {
+    background-color:#FFFFFF;
+    width: 100%;
+    color: black;
+    padding: 15px;
+    margin: 10px 0px;
+    /* border: none; */
+    cursor: pointer;
+    /* border-radius: 20%; */
+    /* border: 15px black; */
+  }
+
+
+  input[type=text] {
+    width: 100%;
+    margin: 8px 0;
+    padding: 5px 20px;
+    display: inline-block;
+    /* border: 2px solid green; */
+    box-sizing: border-box;
+  }
+  input[type=password] {
+    width: 100%;
+    margin: 8px 0;
+    padding: 5px 20px;
+    display: inline-block;
+    /* border: 2px solid green; */
+    box-sizing: border-box;
+  }
+  input[type=email] {
+    width: 100%;
+    margin: 8px 0;
+    padding: 5px 20px;
+    display: inline-block;
+    /* border: 2px solid green; */
+    box-sizing: border-box;
+  }
+
+  button:hover {
+    opacity: 0.7;
+  }
+
+  .container {
+    padding: 25px;
+    background-color: lightblue;
+    border: 2px black;
+  }
+</style>
 </head>  
-<body bgcolor="Lightskyblue">  
-<br>  
-<br>  
+<body>  
+  <center>
+    <h1>Register</h1>
+</center> 
 <form action="/register" method="post">  
-  
-<label> Name </label>         
-<input type="text" name="name" size="15"/> <br> <br>  
-     
-<br>  
-<label>   
-Role :  
-</label><br>  
-<input type="radio" name="role" value="doctor" onclick="toggle('doctor')"/> Doctor <br>  
-<input type="radio" name="role" value="patient" onclick="toggle('patient')"/> Patient <br>  
-<br>  
- <br>  
-Email:  
-<input type="email" id="email" name="email"/> <br>    
-<br> <br>  
-<div id="expertise" style="display: none;">
-  <label> Expertise </label>         
-  <input type="text" name="expertise" size="15"/> <br> <br>
- </div>
-<div class="form-group" id="doctorsselector" style="display: none;">
-    <label for="doctorselected">Doctor</label>
-    <span class="text-danger">*</span>
-    <select
-      name="doctor"
-      id="doctorselected"
-      class="selectpicker form-control"
-      data-live-search="false"
-      style="margin-bottom: 3%"
-    >
-      <% for(var i=0; i<=doctors.length-1; i++) { %>
-      <option><%= doctors[i].name %></option>
-      <% } %>
-    </select>
-</div>
-Password:  
-<input type="Password" id="pass" name="password"> <br>   
-<br> <br>    
-Confirm Password:  
-<input type="Password" id="pass" name="password2"> <br>   
-<br> <br>    
-<button type="submit">Register</button>
-<%- include ("./messagePartials/messages") %>
+  <div class="container" style="width:30%;margin-left: 35%; background-color:#F4F4F4;border: 2px black; border-radius: 5%;">
+
+    Name:       
+    <!-- <br>  -->
+    <input type="text" name="name" size="15"/> <br> <br>  
+    Email:  
+    <input type="email" id="email" name="email"/>  
+    <br> <br>  
+    Password:  
+    <input type="Password" id="pass" name="password">   
+    <br> <br>    
+    Confirm Password:  
+    <input type="Password" id="pass" name="password2">
+    <br> <br>    
+    <label>   
+      Role :  
+      </label><br>  
+      <input type="radio" name="role" value="doctor" onclick="toggle('doctor')"/> Doctor <br>  
+      <input type="radio" name="role" value="patient" onclick="toggle('patient')"/> Patient <br>  
+      <input type="radio" name="role" value="pharmacist" onclick="toggle('pharmacist')"/> Pharmacist <br>  
+      <br>
+      <div id="expertise" style="display: none;">
+        <label> Expertise </label>         
+        <input type="text" name="expertise" size="15"/> <br> <br>
+      </div>
+      <div class="form-group" id="doctorsselector" style="display: none;">
+          <label for="doctorselected">Doctor:  </label>
+          <select
+            name="doctor"
+            id="doctorselected"
+            class="selectpicker form-control"
+            data-live-search="false"
+            style="margin-bottom: 3%"
+          >
+            <% for(var i=0; i<=doctors.length-1; i++) { %>
+            <option style="background-color: white;"><%= doctors[i].name %></option>
+            <% } %>
+          </select>
+      </div>
+    <button type="submit">Register</button>
+    <%- include ("./messagePartials/messages") %>
+  </div>
 </form>  
 </body>  
 <script>
@@ -73,6 +128,15 @@ Confirm Password:
           var doctors=document.querySelector('#doctorsselector');
           console.log(doctors)
           doctors.style.display='block';
+        }
+        else
+        {
+          var expertise=document.querySelector('#expertise');
+          console.log(expertise)
+          expertise.style.display='none';
+          var doctors=document.querySelector('#doctorsselector');
+          console.log(doctors)
+          doctors.style.display='none';
         }
 
     }

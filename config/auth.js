@@ -7,7 +7,7 @@ module.exports = {
       console.log("not authenticated")
 
       req.flash("error_msg", "Please log in to view that resource");
-      res.redirect("/");
+      res.redirect("/login");
     },
     forwardAuthenticated: function (req, res, next) {
       if (!req.isAuthenticated()) {
@@ -18,7 +18,7 @@ module.exports = {
         console.log("DOCTORRRRRRRR")
       } else if (req.user.role == "patient") {
         console.log("PATIENT")
-        // res.redirect("/admindashboard");
+        res.redirect("/patient/dashboard");
       } else {
         console.log("ERROR")
       }
