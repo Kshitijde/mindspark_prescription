@@ -12,7 +12,7 @@ const { forwardAuthenticated, ensureAuthenticated } = require("../config/auth");
 
 router.get('/prescriptions', ensureAuthenticated, async (req, res) => {
     console.log("IN patient prescriptions")
-    var prescriptions = await Prescription.find({ owner: req.user._id }, { date: 1, _id: 0, medicines: 1 })
+    var prescriptions = await Prescription.find({ owner: req.user._id }, { date: 1, _id: 1, medicines: 1 })
     console.log(prescriptions);
     res.render("patient/prescriptions",
         {
@@ -39,4 +39,13 @@ router.get('/profile', ensureAuthenticated, async (req, res) => {
         })
 })
 
+router.get('/showPrescription/:id',ensureAuthenticated,async(req,res)=>{
+    var prescription=await Prescription.findOne({_id:req.params.id})
+    console.log(prescription);
+    res.render('patient/prescriptionView',{
+        prescription,
+        user: req.user
+    })
+       
+})
 module.exports = router;

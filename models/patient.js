@@ -23,6 +23,21 @@ const patientSchema = new mongoose.Schema({
         required: true,
         ref: "Doctor",
     },
+    age:
+    {
+        type:Number,
+        required:true
+    },
+    phoneNumber:
+    {
+        type:Number,
+        required:true
+    },
+    gender:
+    {
+        type:String,
+        required:true
+    }
 });
 
 const Patient = mongoose.model("Patient", patientSchema);

@@ -91,7 +91,7 @@ router.post("/register", async (req, res) => {
     console.log(doctors)
   })
   console.log(req.body)
-  const { name, email, password, password2, role, expertise, doctor } = req.body;
+  const { name, email, password, password2, role, expertise, doctor,gender,phoneNumber,age } = req.body;
   let errors = [];
 
   if (!name || !email || !password || !password2) {
@@ -151,7 +151,10 @@ router.post("/register", async (req, res) => {
             email,
             password,
             role,
-            expertise
+            expertise,
+            gender,
+            phoneNumber,
+            age
           });
           bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newUser.password, salt, (err, hash) => {
@@ -194,7 +197,10 @@ router.post("/register", async (req, res) => {
               email,
               password,
               role,
-              owner
+              owner,
+              gender,
+              phoneNumber,
+              age
             });
             bcrypt.genSalt(10, (err, salt) => {
               bcrypt.hash(newUser.password, salt, (err, hash) => {
@@ -233,7 +239,10 @@ router.post("/register", async (req, res) => {
               name,
               email,
               password,
-              role
+              role,
+              gender,
+              phoneNumber,
+              age
             });
             bcrypt.genSalt(10, (err, salt) => {
               bcrypt.hash(newUser.password, salt, (err, hash) => {

@@ -15,11 +15,11 @@
     <h1>Welcome <%=user.name%></h1>
   </center>
   <% for(var i = prescriptions.length-1; i >= 0 ; i-- ) { %>
-  <div class="card" style="width: 50%;margin-left: 25%; margin-top: 5%;">
+  <div class="card" style="width: 50%;margin-left: 25%; margin-top: 5%;" onclick="location.href='./showPrescription/<%=prescriptions[i]._id%>';" style="cursor: pointer;">
     <div class="card-body">
       <h4 class="card-title"><%= prescriptions[i].date.toDateString() %></h4>
       <% for(var j = prescriptions[i].medicines.length-1; j >= 0 ; j-- ) { %>
-      <p class="card-text"><%= prescriptions[i].medicines[j].medicine %> - <%= prescriptions[i].medicines[j].dosage %>
+      <p class="card-text"><%= prescriptions[i].medicines[j].medicine%> - <%= prescriptions[i].medicines[j].dosage %>
       </p>
       <%}%>
         </div>

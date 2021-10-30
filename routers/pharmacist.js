@@ -47,18 +47,24 @@ router.post('/verifyEmail',ensureAuthenticated,async(req,res)=>{
         {
                 user:req.user,
                 otp,
-                email,
+                email:req.body.email,
                 errorMessage:""
         });
         
     }
 })
 
-router.post('/showPatient/:email',ensureAuthenticated,async(req,res)=>{
+router.get('/showPatient/:email',ensureAuthenticated,async(req,res)=>{
     var email=req.params.email;
-    var patient=await Patient.find({email});
-    var prescription=await Prescription.findOne({owner:patient._id},{},{ sort: { 'created_at' : -1 } })
+    var patient=await Patient.findOne({email});
+    console.log(patient)
+    var prescription=await Prescription.findOne({owner:patient._id},{},{ sort: { 'createdAt' : -1 } })
     console.log(prescription);
+    res.render('pharmacist/prescriptionView',{
+        prescription,
+        user: req.user
+    })
+       
 })
 
 
